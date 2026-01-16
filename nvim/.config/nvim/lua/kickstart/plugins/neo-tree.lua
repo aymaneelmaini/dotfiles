@@ -94,13 +94,50 @@ return {
       },
     },
     filesystem = {
+      renderers = {
+        directory = {
+          { "indent" },
+          { "icon" },
+          { "current_filter" },
+          { "name" },
+          { "clipboard" },
+          { "diagnostics" },
+          { "git_status", highlight = "NeoTreeDimText" },
+        },
+        file = {
+          { "indent" },
+          { "icon" },
+          { "name", use_git_status_colors = true },
+          { "clipboard" },
+          { "bufnr" },
+          { "modified" },
+          { "diagnostics" },
+          { "git_status", highlight = "NeoTreeDimText" },
+        },
+      },
       filtered_items = {
         visible = false, -- This is what you want: If you set this to `true`, all "hide" just mean "dimmed out"
-        hide_dotfiles = false,
+        hide_dotfiles = true, -- Hide hidden files/folders by default
         hide_gitignored = false,
         hide_by_name = {
           '.DS_Store',
           'thumbs.db',
+          'node_modules',
+        },
+        always_show = { -- Always show these important dotfiles
+          '.env',
+          '.gitignore',
+          '.github',
+          '.gitattributes',
+          '.editorconfig',
+          '.clang-format',
+          '.eslintrc.js',
+          '.eslintrc.json',
+          '.prettierrc',
+          '.prettierrc.json',
+          '.nvmrc',
+          '.npmrc',
+          '.dockerignore',
         },
         never_show = {},
       },

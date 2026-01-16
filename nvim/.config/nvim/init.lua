@@ -115,12 +115,20 @@ require('lazy').setup({
         'lewis6991/gitsigns.nvim',
         opts = {
             signs = {
-                add = { text = '+' },
-                change = { text = '~' },
-                delete = { text = '_' },
-                topdelete = { text = '‾' },
-                changedelete = { text = '~' },
+                add = { text = '█' },
+                change = { text = '█' },
+                delete = { text = '█' },
+                topdelete = { text = '█' },
+                changedelete = { text = '█' },
             },
+            current_line_blame = true, -- Enable inline blame by default
+            current_line_blame_opts = {
+                virt_text = true,
+                virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+                delay = 300, -- Delay in ms before showing blame
+                ignore_whitespace = false,
+            },
+            current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
         },
     },
 
@@ -231,6 +239,11 @@ require('lazy').setup({
                 builtin.find_files { cwd = vim.fn.stdpath 'config' }
             end, { desc = '[S]earch [N]eovim files' })
         end,
+    },
+    -- cursor ninja animation
+    {
+        'sphamba/smear-cursor.nvim',
+        opts = {},
     },
 
     -- LSP Plugins
@@ -412,6 +425,9 @@ require('lazy').setup({
                 -- Kotlin Language Server
                 kotlin_language_server = {},
 
+                -- XML Language Server (for Java - Maven, Spring, etc.)
+                lemminx = {},
+
                 gopls = {},
                 rust_analyzer = {},
                 ts_ls = {},
@@ -478,6 +494,7 @@ require('lazy').setup({
                 c = { 'clang-format' },
                 cpp = { 'clang-format' },
                 kotlin = { 'ktlint' },
+                xml = { 'xmlformat' },
             },
         },
     },
@@ -740,7 +757,7 @@ require('lazy').setup({
         main = 'nvim-treesitter.configs', -- Sets main module to use for opts
         -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
         opts = {
-            ensure_installed = { 'bash', 'c', 'cpp', 'kotlin', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+            ensure_installed = { 'bash', 'c', 'cpp', 'kotlin', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'xml' },
             -- Autoinstall languages that are not installed
             auto_install = true,
             highlight = {
@@ -785,6 +802,27 @@ require('lazy').setup({
             end, { desc = '[T]oggle terminal [V]ertical' })
         end,
     },
+
+    -- Terminal fzf integration - same fzf experience as terminal
+    {
+        'junegunn/fzf',
+        build = function()
+            vim.fn['fzf#install']()
+        end,
+    },
+    {
+        'junegunn/fzf.vim',
+        dependencies = { 'junegunn/fzf' },
+        config = function()
+            -- Use terminal-style fzf window
+            vim.g.fzf_layout = { window = { width = 0.9, height = 0.6 } }
+
+            -- Simple keybinding for quick file access
+            vim.keymap.set('n', '<C-p>', ':Files<CR>', { desc = 'Fzf Files' })
+            vim.keymap.set('n', '<leader>z', ':Files<CR>', { desc = 'Fzf Files' })
+        end,
+    },
+
     -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
     -- init.lua. If you want these files, they are in the repository, so you can just download them and
     -- place them in the correct locations.
