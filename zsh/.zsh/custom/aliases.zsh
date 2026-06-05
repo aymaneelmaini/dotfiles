@@ -132,8 +132,11 @@ alias ltt="eza --tree --level=3 --long --icons --git"
 alias tree="eza --tree"
 alias c="clear"
 
-alias ff="exec $SHELL"
-alias v="nvim"
+alias ff="exec /usr/bin/zsh"
+alias n="nvim"
+
+
+alias clip="xclip -selection clipboard"
 
 idea() {
     if [ -n "$1" ]; then
